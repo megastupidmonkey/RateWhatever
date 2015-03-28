@@ -8,12 +8,12 @@ public class DBDriver {
 	}
 	/** @requires ENTITIES table exists
 	 */
-	public void addEntity(){
+	public void addEntity(Entity entity){
 		
 	}
 	/** @requires RATINGS table exists
 	 */
-	public void addRating(){
+	public void addRating(Rating rating){
 		
 	}
 }

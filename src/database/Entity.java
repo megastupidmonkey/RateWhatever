@@ -9,4 +9,10 @@ public class Entity {
 		this.properties = properties;
 		this.ratings = ratings;
 	}
+	public Map<String, String> getProperties() {
+		return properties;
+	}
+	public List<Rating> getRatings() {
+		return ratings;
+	}
 }
