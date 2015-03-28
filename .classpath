@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="spring/spring-core-3.2.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="spring/spring-jdbc-3.2.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="spring/spring-tx-3.2.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="spring/commons-logging-1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
