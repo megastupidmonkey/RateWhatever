@@ -2,6 +2,7 @@ package database;
 import java.util.List;
 
 public class Rating {
+	private int id;
 	private int numStars;
 	private String description;
 	private Entity entity;
@@ -13,6 +14,9 @@ public class Rating {
 		this.entity = entity;
 		this.owner = owner;
 		this.replies = replies;
+	}
+	public int getId() {
+		return id;
 	}
 	public int getNumStars() {
 		return numStars;
