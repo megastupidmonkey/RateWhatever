@@ -55,6 +55,6 @@ public class Rating {
 		jb.addValue("username", owner);
 		jb.addArray("replies", replies);
 		
-		return "{" + jb.toString() + "}";
+		return jb.toString();
 	}
 }

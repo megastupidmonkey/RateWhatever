@@ -65,6 +65,8 @@ public class Processor {
 		jb.addArray("replies", ratings);
 		
 		client.sendToClient(jb.toString());
+		
+		client.stopClient();
 	}
 	
 	private void addNewRating(ClientSocket client, Map<String, String> map) {

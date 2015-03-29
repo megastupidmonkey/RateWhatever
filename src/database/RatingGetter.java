@@ -1,5 +1,9 @@
 package database;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -35,7 +39,7 @@ public class RatingGetter {
 			return null; //result set is empty
 		rs.next();
 		Entity entity = new Entity();
-		for(int i = 1;i < rs.getMetaData().getColumnCount();i++){
+		for(int i = 1;i <= rs.getMetaData().getColumnCount();i++){
 			String prop = rs.getMetaData().getColumnName(i);
 			String val = rs.getString(i);
 			entity.addProperty(prop, val);
@@ -76,6 +80,7 @@ public class RatingGetter {
 		return rating;
 	}
 	public List<String> getReplies(String list) throws SQLException{
-		return new java.util.ArrayList<String>(java.util.Arrays.asList(list.split("\\s*,\\s*")));
+		list = list.substring(1, list.length() - 1);
+		return new ArrayList<String>(Arrays.asList(list.split("\\s*,\\s*")));
 	}
 }

@@ -51,7 +51,7 @@ public class JSONBuilder {
 	}
 	
 	public void addArray(String key, String[] arr) {
-StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 		
 		sb.append('[');
 		
@@ -102,6 +102,8 @@ StringBuilder sb = new StringBuilder();
 		sb.append(']');
 		
 		addArray(key, sb.toString());
+		
+		System.out.println(sb.toString());
 	}
 	
 	public String toString() {
