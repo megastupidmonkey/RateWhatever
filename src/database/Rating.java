@@ -8,15 +8,18 @@ public class Rating {
 	private Entity entity;
 	private String owner;
 	private List<String> replies;
-	public Rating(int numStars, String description, Entity entity, String owner, List<String> replies){
+	public Rating(int numStars, String description, Entity entity, String owner){
 		this.numStars = numStars;
 		this.description = description;
 		this.entity = entity;
 		this.owner = owner;
-		this.replies = replies;
+		this.replies = new java.util.ArrayList<>();
 	}
 	public int getId() {
 		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	public int getNumStars() {
 		return numStars;
@@ -32,5 +35,8 @@ public class Rating {
 	}
 	public List<String> getReplies() {
 		return replies;
+	}
+	public void addReply(String reply){
+		this.replies.add(reply);
 	}
 }

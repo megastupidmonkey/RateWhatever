@@ -42,15 +42,18 @@ public class DBDriver {
 				+ "' where id=" + entity.getId());
 	}
 	/** @throws SQLException 
-	 * @requires RATINGS table exists and columns are in order ID, OWNER, NUMSTARS, ENTITYID, , REPLIES
+	 * @requires RATINGS table exists and columns are in order ID,
+	 *  OWNER, NUMSTARS, DESCRIPTION, ENTITYID, REPLIES
 	 */
 	public void addRating(Rating rating) throws SQLException{
-		s.addBatch("insert into ratings values(" + rating.getId() + ", '" + rating.getDescription()
-				+ "', " + rating.getEntity().getId() + ", '" + rating.getOwner() +
-				"', '" + rating.getReplies().toString() + "')");
+		String mysql = "insert into ratings (ratingID, owner, numStars, description, entityID, replies) values("
+				+ rating.getId() + ", '" + rating.getOwner() + "', "
+				+ rating.getNumStars() + ", '" + rating.getDescription() + "', "
+				+ rating.getEntity().getId() + ", '" + rating.getReplies().toString() + "')";
+		s.addBatch(mysql);
 	}
 	public void updateRating(int ratingID, String property, String value) throws SQLException{
-		s.addBatch("update table entities set " + property + "=" + value + " where id=" + ratingID);
+		s.addBatch("update ratings set " + property + "=" + value + " where ratingID=" + ratingID);
 	}
 	public void executeBatch() throws SQLException{
 		s.executeBatch();

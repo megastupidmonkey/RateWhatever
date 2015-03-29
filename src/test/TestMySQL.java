@@ -10,7 +10,8 @@ public class TestMySQL {
 			String username = "user";
 			String password = "1whatever";
 			DBDriver driver = new DBDriver(url, username, password);
-			Rating rating = new Rating();
+			Rating rating = new Rating(2, "", new Entity(), "yuping");
+			driver.updateRating(0, "numStars", "3");
 			driver.executeBatch();
 		} catch (SQLException e) {
 			e.printStackTrace();
