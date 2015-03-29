@@ -1,28 +1,24 @@
 package database;
 import java.sql.*;
+
 import javax.sql.DataSource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-@SuppressWarnings("unused")
-public class DBDriver {
-	private DataSource ds;
-	private Connection c;
+public class DBUpdater {
 	private Statement s;
-	public DBDriver(String url, String username, String password){
+	public DBUpdater(String url, String username, String password){
 		DriverManagerDataSource newDs = new DriverManagerDataSource();
 		newDs.setUrl(url);
 		newDs.setUsername(username);
 		newDs.setPassword(password);
 		init(newDs);
 	}
-	public DBDriver(DataSource ds){
+	public DBUpdater(DataSource ds){
 		init(ds);
 	}
 	private void init(DataSource ds){
 		try {
-			this.ds = ds;
-			this.c = ds.getConnection();
-			this.s = c.createStatement();
+			this.s = ds.getConnection().createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -30,16 +26,22 @@ public class DBDriver {
 	/** @throws SQLException 
 	 * @requires ENTITIES table exists and has columns ID and PROPERTIES
 	 */
-	public void addEntity(Entity entity) throws SQLException{
-		s.addBatch("insert into entities (id, properties) values(" + entity.getId() + ", '" +
-				JSONConverter.toJson(entity.getProperties()) + "')");
+	public void addEntity(String tableName, Entity entity) throws SQLException{
+		String mysql = "insert into " + tableName + "(id, ";
+		for(String property : entity.getProperties()){
+			mysql += (property + ", ");
+		}
+		mysql = mysql.substring(0, mysql.length()-2) + ") values(" + entity.getId() + ", ";
+		for(String property : entity.getProperties()){
+			mysql += (entity.getValue(property) + ", ");
+		}
+		mysql = mysql.substring(0, mysql.length()-2) + ")";
 	}
 	/** @throws SQLException 
 	 * @requires ENTITIES table exists and columns are in order ID, PROPERTIES
 	 */
-	public void updateEntity(Entity entity) throws SQLException{
-		s.addBatch("update entities set properties='" + JSONConverter.toJson(entity.getProperties())
-				+ "' where id=" + entity.getId());
+	public void updateEntity(String tableName, int entityID, String property, String value) throws SQLException{
+		s.addBatch("update " + tableName + "set " + property + "=" + value + " where id=" + entityID);
 	}
 	/** @throws SQLException 
 	 * @requires RATINGS table exists and columns are in order ID,
@@ -57,5 +59,8 @@ public class DBDriver {
 	}
 	public void executeBatch() throws SQLException{
 		s.executeBatch();
+	}
+	public void finish() throws SQLException{
+		s.close();
 	}
 }

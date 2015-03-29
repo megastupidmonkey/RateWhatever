@@ -1,18 +1,14 @@
 package database;
-import java.util.Map;
 import java.util.List;
 
 public class Entity {
 	private int id;
-	private Map<String,String> properties;
-	private List<Rating> ratings;
+	private List<String> properties;
+	private List<String> values;
+	private double averageRating;
 	public Entity(){
-		this.properties = new java.util.HashMap<>();
-		this.ratings = new java.util.ArrayList<>();
-	}
-	public Entity(Map<String,String> properties, List<Rating> ratings){
-		this.properties = properties;
-		this.ratings = ratings;
+		this.properties = new java.util.ArrayList<>();
+		this.values = new java.util.ArrayList<>();
 	}
 	public int getId() {
 		return id;
@@ -20,16 +16,20 @@ public class Entity {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public Map<String, String> getProperties() {
+	public List<String> getProperties() {
 		return properties;
 	}
 	public void addProperty(String property, String value){
-		this.properties.put(property, value);
+		this.properties.add(property);
+		this.values.add(value);
 	}
-	public List<Rating> getRatings() {
-		return ratings;
+	public String getValue(String property){
+		return this.values.get(this.properties.indexOf(property));
 	}
-	public void addRating(Rating rating){
-		this.ratings.add(rating);
+	public double getAverageRating() {
+		return averageRating;
+	}
+	public void setAverageRating(double averageRating) {
+		this.averageRating = averageRating;
 	}
 }
