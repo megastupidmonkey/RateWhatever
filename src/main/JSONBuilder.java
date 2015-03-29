@@ -1,18 +1,53 @@
 package main;
 
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 public class JSONBuilder {
-	private Map<String, String> map;
+	private StringBuilder sb;
+	private int count;
 	
 	public JSONBuilder() {
-		map = new HashMap<>();
+		clear();
+	}
+	
+	public void clear() {
+		sb = new StringBuilder();
+		count = 0;
 	}
 	
 	public void addValue(String key, String value) {
-		map.put(key, value);
+		if (count > 0) {
+			sb.append(',');
+		}
+		
+		count++;
+		
+		sb.append('"');
+		sb.append(key);
+		sb.append('"');
+		
+		sb.append(':');
+		
+		sb.append('"');
+		sb.append(value);
+		sb.append('"');
+	}
+	
+	private void addArray(String key, String arrStr) {
+		if (count > 0) {
+			sb.append(',');
+		}
+		
+		count++;
+		
+		sb.append('"');
+		sb.append(key);
+		sb.append('"');
+		
+		sb.append(':');
+		
+		sb.append(arrStr);
 	}
 	
 	public void addArray(String key, String[] arr) {
@@ -25,17 +60,33 @@ public class JSONBuilder {
 		}
 		
 		for (int i = 1; i < arr.length; i++) {
-			sb.append(arr[i]);
 			sb.append(',');
+			sb.append(arr[i]);
 		}
 		sb.append(']');
+		
+		addArray(key, sb.toString());
 	}
 	
 	public void addArray(String key, List<String> list) {
+		StringBuilder sb = new StringBuilder();
+		Iterator<String> it = list.iterator();
+		sb.append('[');
 		
+		if (it.hasNext()) {
+			sb.append(it.next());
+		}
+		
+		while (it.hasNext()) {
+			sb.append(',');
+			sb.append(it.next());
+		}
+		sb.append(']');
+		
+		addArray(key, sb.toString());
 	}
 	
 	public String toString() {
-		return null;
+		return "{" + sb.toString() + "}";
 	}
 }

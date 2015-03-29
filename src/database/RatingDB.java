@@ -11,7 +11,7 @@ public class RatingDB {
 		this.updater = new DBUpdater(url, username, password);
 		this.fetcher = new RatingGetter(url, username, password);
 	}
-	public void addNewRating(String owner, String location, int numStars, String description){
+	public boolean addNewRating(String owner, String location, int numStars, String description){
 		try {
 			Entity entity = fetcher.getEntityWithProperty(ENT_TABLE, "location", location);
 			if(entity == null){
@@ -22,8 +22,12 @@ public class RatingDB {
 			}
 			Rating rating = new Rating(numStars, description, entity, owner);
 			updater.addRating(rating);
+			
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			
+			return false;
 		}
 	}
 	public List<Rating> getRatings(String location){

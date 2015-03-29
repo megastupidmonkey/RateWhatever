@@ -1,5 +1,6 @@
 package main;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ public class Processor {
 				"user", "1whatever");
 	}
 	
-	public void process(ClientSocket client, String str) {
+	public void process(ClientSocket client, String str) throws IOException {
 		String[] pairs = str.split("&");
 		Map<String, String> map = new HashMap<>();
 		
@@ -31,7 +32,7 @@ public class Processor {
 		switching(client, map);
 	}
 	
-	private void switching(ClientSocket client, Map<String, String> map) {
+	private void switching(ClientSocket client, Map<String, String> map) throws IOException {
 		String action = map.get("action");
 		
 		if (action == null) {
@@ -48,10 +49,23 @@ public class Processor {
 			int numStars = Integer.parseInt(map.get("numStars"));
 			String description = map.get("description");
 			
-			db.addNewRating(username, location, numStars, description);
-			
 			// respond to client
+			JSONBuilder jb = new JSONBuilder();
+			jb.addValue("action", "new");
 			
+			if (db.addNewRating(username, location, numStars, description)) {
+				jb.addValue("status", "success");
+				
+				client.sendToClient(jb.toString());
+			} else {
+				// Database error!
+				jb.addValue("status", "failed");
+				
+				client.sendToClient(jb.toString());
+			}
+			
+			// Close connection
+			client.stopClient();
 		}
 	}
 	
