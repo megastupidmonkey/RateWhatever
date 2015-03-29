@@ -70,6 +70,8 @@ public class RatingDB {
 			updater.updateRating(ratingID, "replies", 
 					this.getRating(ratingID).getReplies().toString());
 			
+			System.out.println(getRating(ratingID).getReplies().toString());
+			
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();

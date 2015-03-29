@@ -59,6 +59,8 @@ public class Processor {
 		JSONBuilder jb = new JSONBuilder();
 		jb.addValue("action", "reply");
 		
+		System.out.println(reply);
+		
 		if (db.addNewReply(ratingID, reply)) {
 			jb.addValue("status", "success");
 		} else {
