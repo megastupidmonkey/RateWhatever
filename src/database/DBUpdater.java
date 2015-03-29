@@ -27,15 +27,17 @@ public class DBUpdater {
 	 * @requires ENTITIES table exists and has columns ID and PROPERTIES
 	 */
 	public void addEntity(String tableName, Entity entity) throws SQLException{
-		String mysql = "insert into " + tableName + "(id, ";
+		String mysql = "insert into " + tableName + " (id, totalStars, numRatings, ";
 		for(String property : entity.getProperties()){
 			mysql += (property + ", ");
 		}
-		mysql = mysql.substring(0, mysql.length()-2) + ") values(" + entity.getId() + ", ";
+		mysql = mysql.substring(0, mysql.length()-2) + ") values(" + entity.getId() + ", "
+				+ entity.getTotalStars() + ", " + entity.getNumRatings() + ", ";
 		for(String property : entity.getProperties()){
 			mysql += (entity.getValue(property) + ", ");
 		}
 		mysql = mysql.substring(0, mysql.length()-2) + ")";
+		s.addBatch(mysql);
 	}
 	/** @throws SQLException 
 	 * @requires ENTITIES table exists and columns are in order ID, PROPERTIES
@@ -49,8 +51,8 @@ public class DBUpdater {
 	 */
 	public void addRating(Rating rating) throws SQLException{
 		String mysql = "insert into ratings (ratingID, owner, numStars, description, entityID, replies) values("
-				+ rating.getId() + ", '" + rating.getOwner() + "', "
-				+ rating.getNumStars() + ", '" + rating.getDescription() + "', "
+				+ rating.getId() + ", " + rating.getOwner() + ", "
+				+ rating.getNumStars() + ", " + rating.getDescription() + ", "
 				+ rating.getEntity().getId() + ", '" + rating.getReplies().toString() + "')";
 		s.addBatch(mysql);
 	}

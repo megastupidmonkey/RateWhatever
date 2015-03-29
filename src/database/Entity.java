@@ -5,7 +5,8 @@ public class Entity {
 	private int id;
 	private List<String> properties;
 	private List<String> values;
-	private double averageRating;
+	private int totalStars;
+	private int numRatings;
 	public Entity(){
 		this.properties = new java.util.ArrayList<>();
 		this.values = new java.util.ArrayList<>();
@@ -26,10 +27,16 @@ public class Entity {
 	public String getValue(String property){
 		return this.values.get(this.properties.indexOf(property));
 	}
-	public double getAverageRating() {
-		return averageRating;
+	public double getTotalStars() {
+		return totalStars;
 	}
-	public void setAverageRating(double averageRating) {
-		this.averageRating = averageRating;
+	public void setAverageRating(int totalStars) {
+		this.totalStars = totalStars;
+	}
+	public int getNumRatings() {
+		return numRatings;
+	}
+	public void setNumRatings(int numRatings) {
+		this.numRatings = numRatings;
 	}
 }
