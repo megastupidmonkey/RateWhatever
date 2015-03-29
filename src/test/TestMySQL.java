@@ -8,7 +8,7 @@ public class TestMySQL {
 		String password = "1whatever";
 		RatingDB db = new RatingDB(url, username, password);
 		java.util.List<Rating> ratings = db.getRatings("\'chipotle\'");
-		System.out.println(ratings);
-		System.out.println(db.getRating(0));
+		db.addNewReply(ratings.get(0), "really?");
+		db.commit();
 	}
 }

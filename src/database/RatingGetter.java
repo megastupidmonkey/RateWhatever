@@ -71,6 +71,6 @@ public class RatingGetter {
 		return rating;
 	}
 	public List<String> getReplies(String list) throws SQLException{
-		return java.util.Arrays.asList(list.split("\\s*,\\s*"));
+		return new java.util.ArrayList<String>(java.util.Arrays.asList(list.split("\\s*,\\s*")));
 	}
 }
