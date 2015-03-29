@@ -69,9 +69,9 @@ public class DBUpdater {
 		s.executeBatch();
 	}
 	public int getRowCount(String tableName) throws SQLException{
-		ResultSet rs = s.executeQuery("select * from " + tableName);
-		rs.afterLast();
-		return rs.getRow();
+		ResultSet rs = s.executeQuery("select COUNT(*) from " + tableName);
+		rs.next();
+		return rs.getInt(1);
 	}
 	public void executeBatch() throws SQLException{
 		s.executeBatch();

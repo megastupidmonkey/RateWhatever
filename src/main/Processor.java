@@ -52,12 +52,19 @@ public class Processor {
 	private void searchLocation(ClientSocket client, Map<String, String> map) {
 		String location = map.get("location");
 		
-		List<Rating> ratings = db.getRatings(location);
+		List<Rating> ratingsList = db.getRatings(location);
 		
 		// respond to client
 		JSONBuilder jb = new JSONBuilder();
 		jb.addValue("action", "search");
 		
+		String[] ratings = new String[ratingsList.size()];
+		for (int i = 0; i < ratings.length; i++) {
+			ratings[i] = ratingsList.get(i).toString();
+		}
+		jb.addArray("replies", ratings);
+		
+		client.sendToClient(jb.toString());
 	}
 	
 	private void addNewRating(ClientSocket client, Map<String, String> map) {

@@ -21,7 +21,7 @@ public class RatingDB {
 				entity = new Entity();
 				entity.addProperty("location", location);
 				entity.setAverageRating(numStars);
-				entity.setId(updater.getRowCount(ENT_TABLE) + 1);
+				entity.setId(updater.getRowCount(ENT_TABLE));
 				updater.addEntity("entities", entity);
 			}
 			Rating rating = new Rating(numStars, description, entity, owner);
