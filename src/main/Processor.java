@@ -78,9 +78,22 @@ public class Processor {
 		
 		List<Rating> ratingsList = db.getRatings(location);
 		
+		if (ratingsList == null) {
+			// no such place
+			JSONBuilder jb = new JSONBuilder();
+			jb.addValue("action", "search");
+			jb.addValue("status", "failed");
+			
+			client.sendToClient(jb.toString());
+			
+			client.stopClient();
+			return;
+		}
+		
 		// respond to client
 		JSONBuilder jb = new JSONBuilder();
 		jb.addValue("action", "search");
+		jb.addValue("status", "success");
 		
 		int average = db.getAverageRating(location);
 		jb.addValue("average", average);

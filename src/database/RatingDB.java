@@ -42,6 +42,9 @@ public class RatingDB {
 	public List<Rating> getRatings(String location){
 		try {
 			Entity entity = fetcher.getEntityWithProperty(ENT_TABLE, "location", location);
+			if (entity == null) {
+				return null;
+			}
 			return fetcher.getRatingsForEntity(RATE_TABLE, entity);
 		} catch (SQLException e) {
 			e.printStackTrace();
