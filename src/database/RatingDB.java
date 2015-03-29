@@ -68,8 +68,7 @@ public class RatingDB {
 		try {
 			Rating rating = this.getRating(ratingID);
 			rating.addReply(reply);
-			updater.updateRating(ratingID, "replies", 
-					rating.getReplies().toString());
+			updater.updateRating(ratingID, "replies", rating.getReplies().toString());
 			
 			return true;
 		} catch (SQLException e) {
