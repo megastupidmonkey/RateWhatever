@@ -68,6 +68,11 @@ public class DBUpdater {
 				value + "' where ratingID='" + ratingID + "'");
 		s.executeBatch();
 	}
+	public int getRowCount(String tableName) throws SQLException{
+		ResultSet rs = s.executeQuery("select * from " + tableName);
+		rs.afterLast();
+		return rs.getRow();
+	}
 	public void executeBatch() throws SQLException{
 		s.executeBatch();
 	}

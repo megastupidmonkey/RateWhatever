@@ -21,11 +21,12 @@ public class RatingDB {
 				entity = new Entity();
 				entity.addProperty("location", location);
 				entity.setAverageRating(numStars);
+				entity.setId(updater.getRowCount(ENT_TABLE) + 1);
 				updater.addEntity("entities", entity);
 			}
 			Rating rating = new Rating(numStars, description, entity, owner);
+			rating.setId(updater.getRowCount(RATE_TABLE) + 1);
 			updater.addRating(rating);
-			
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
