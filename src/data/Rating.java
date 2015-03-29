@@ -2,6 +2,8 @@ package data;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.JSONBuilder;
+
 public class Rating {
 	private int id;
 	private int numStars;
@@ -42,5 +44,17 @@ public class Rating {
 	}
 	public void addReply(String reply){
 		this.replies.add(reply);
+	}
+	
+	public String toString() {
+		JSONBuilder jb = new JSONBuilder();
+		
+		jb.addValue("id", String.valueOf(id));
+		jb.addValue("numStars", String.valueOf(numStars));
+		jb.addValue("description", description);
+		jb.addValue("username", owner);
+		jb.addArray("replies", replies);
+		
+		return "{" + jb.toString() + "}";
 	}
 }

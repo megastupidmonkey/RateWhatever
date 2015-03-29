@@ -2,8 +2,10 @@ package main;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import data.Rating;
 import database.RatingDB;
 
 public class Processor {
@@ -41,32 +43,46 @@ public class Processor {
 		}
 		
 		if (action.equals("new")) {
-			/*
-			 * Add New Rating
-			 */
-			String username = map.get("username");
-			String location = map.get("location");
-			int numStars = Integer.parseInt(map.get("numStars"));
-			String description = map.get("description");
-			
-			// respond to client
-			JSONBuilder jb = new JSONBuilder();
-			jb.addValue("action", "new");
-			
-			if (db.addNewRating(username, location, numStars, description)) {
-				jb.addValue("status", "success");
-				
-				client.sendToClient(jb.toString());
-			} else {
-				// Database error!
-				jb.addValue("status", "failed");
-				
-				client.sendToClient(jb.toString());
-			}
-			
-			// Close connection
-			client.stopClient();
+			addNewRating(client, map);
+		} else if (action.equals("search")) {
+			searchLocation(client, map);
 		}
+	}
+	
+	private void searchLocation(ClientSocket client, Map<String, String> map) {
+		String location = map.get("location");
+		
+		List<Rating> ratings = db.getRatings(location);
+		
+		// respond to client
+		JSONBuilder jb = new JSONBuilder();
+		jb.addValue("action", "search");
+		
+	}
+	
+	private void addNewRating(ClientSocket client, Map<String, String> map) {
+		String username = map.get("username");
+		String location = map.get("location");
+		int numStars = Integer.parseInt(map.get("numStars"));
+		String description = map.get("description");
+		
+		// respond to client
+		JSONBuilder jb = new JSONBuilder();
+		jb.addValue("action", "new");
+		
+		if (db.addNewRating(username, location, numStars, description)) {
+			jb.addValue("status", "success");
+			
+			client.sendToClient(jb.toString());
+		} else {
+			// Database error!
+			jb.addValue("status", "failed");
+			
+			client.sendToClient(jb.toString());
+		}
+		
+		// Close connection
+		client.stopClient();
 	}
 	
 	private String decode(String str) {

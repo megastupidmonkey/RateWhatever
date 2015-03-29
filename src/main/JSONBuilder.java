@@ -16,7 +16,7 @@ public class JSONBuilder {
 		count = 0;
 	}
 	
-	public void addValue(String key, String value) {
+	public void addValue(String key, Object value) {
 		if (count > 0) {
 			sb.append(',');
 		}
@@ -30,7 +30,7 @@ public class JSONBuilder {
 		sb.append(':');
 		
 		sb.append('"');
-		sb.append(value);
+		sb.append(value.toString());
 		sb.append('"');
 	}
 	
@@ -51,7 +51,7 @@ public class JSONBuilder {
 	}
 	
 	public void addArray(String key, String[] arr) {
-		StringBuilder sb = new StringBuilder();
+StringBuilder sb = new StringBuilder();
 		
 		sb.append('[');
 		
@@ -62,6 +62,24 @@ public class JSONBuilder {
 		for (int i = 1; i < arr.length; i++) {
 			sb.append(',');
 			sb.append(arr[i]);
+		}
+		sb.append(']');
+		
+		addArray(key, sb.toString());
+	}
+	
+	public void addArray(String key, Object[] arr) {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append('[');
+		
+		if (arr.length > 0) {
+			sb.append(arr[0].toString());
+		}
+		
+		for (int i = 1; i < arr.length; i++) {
+			sb.append(',');
+			sb.append(arr[i].toString());
 		}
 		sb.append(']');
 		
