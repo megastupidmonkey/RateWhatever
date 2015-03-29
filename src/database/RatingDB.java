@@ -2,6 +2,9 @@ package database;
 import java.sql.SQLException;
 import java.util.List;
 
+import data.Entity;
+import data.Rating;
+
 public class RatingDB {
 	private static String ENT_TABLE = "entities";
 	private static String RATE_TABLE = "ratings";
@@ -47,13 +50,16 @@ public class RatingDB {
 			return null;
 		}
 	}
-	public void addNewReply(Rating rating, String reply){
+	public boolean addNewReply(Rating rating, String reply){
 		try {
 			rating.addReply(reply);
 			updater.updateRating(rating.getId(), "replies", "\'" + 
 					rating.getReplies().toString() + "\'");
+			
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 	public void commit(){

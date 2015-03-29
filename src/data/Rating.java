@@ -1,4 +1,5 @@
-package database;
+package data;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Rating {
@@ -13,7 +14,7 @@ public class Rating {
 		this.description = description;
 		this.entity = entity;
 		this.owner = owner;
-		this.replies = new java.util.ArrayList<>();
+		this.replies = new ArrayList<>();
 	}
 	public int getId() {
 		return id;

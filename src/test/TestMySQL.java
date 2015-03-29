@@ -1,4 +1,5 @@
 package test;
+import data.Rating;
 import database.*;
 
 public class TestMySQL {

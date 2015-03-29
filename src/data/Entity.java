@@ -1,4 +1,5 @@
-package database;
+package data;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Entity {
@@ -8,8 +9,8 @@ public class Entity {
 	private int totalStars;
 	private int numRatings;
 	public Entity(){
-		this.properties = new java.util.ArrayList<>();
-		this.values = new java.util.ArrayList<>();
+		this.properties = new ArrayList<>();
+		this.values = new  ArrayList<>();
 	}
 	public int getId() {
 		return id;
