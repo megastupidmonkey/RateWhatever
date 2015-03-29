@@ -24,14 +24,13 @@ public class RatingDB {
 				entity.setId(updater.getRowCount(ENT_TABLE));
 				updater.addEntity("entities", entity);
 			}
-			
-			System.out.println(entity.getId());
-			
 			Rating rating = new Rating(numStars, description, entity, owner);
 			rating.setId(updater.getRowCount(RATE_TABLE));
 			updater.addRating(rating);
-			updater.updateEntity(ENT_TABLE, entity.getId(), "totalStars", "" + (entity.getTotalStars() + numStars));
-			updater.updateEntity(ENT_TABLE, entity.getId(), "numRatings", "" + (entity.getNumRatings() + 1));
+			entity.setTotalStars(entity.getTotalStars() + numStars);
+			entity.setNumRatings(entity.getNumRatings() + 1);
+			updater.updateEntity(ENT_TABLE, entity.getId(), "totalStars", "" + entity.getTotalStars());
+			updater.updateEntity(ENT_TABLE, entity.getId(), "numRatings", "" + entity.getNumRatings());
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -46,6 +45,10 @@ public class RatingDB {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	public int getAverageRating(Entity entity){
+		double numStars = (double)entity.getTotalStars();
+		return (int)Math.round(numStars/(entity.getNumRatings()));
 	}
 	public Rating getRating(int ratingID){
 		try {

@@ -28,7 +28,7 @@ public class Entity {
 	public String getValue(String property){
 		return this.values.get(this.properties.indexOf(property));
 	}
-	public double getTotalStars() {
+	public int getTotalStars() {
 		return totalStars;
 	}
 	public void setTotalStars(int totalStars) {
