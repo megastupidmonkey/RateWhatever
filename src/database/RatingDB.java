@@ -1,7 +1,9 @@
 package database;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
 
+import main.JSONBuilder;
 import data.Entity;
 import data.Rating;
 
@@ -68,7 +70,24 @@ public class RatingDB {
 		try {
 			Rating rating = this.getRating(ratingID);
 			rating.addReply(reply);
-			updater.updateRating(ratingID, "replies", rating.getReplies().toString());
+			
+			StringBuilder sb = new StringBuilder();
+			Iterator<String> it = rating.getReplies().iterator();
+			sb.append('[');
+			
+			if (it.hasNext()) {
+				sb.append(it.next());
+			}
+			
+			while (it.hasNext()) {
+				sb.append(',');
+				sb.append(it.next());
+			}
+			sb.append(']');
+			
+			System.out.println(sb.toString());
+			
+			updater.updateRating(ratingID, "replies", sb.toString());
 			
 			return true;
 		} catch (SQLException e) {

@@ -58,7 +58,7 @@ public class Rating {
 			
 			String[] repliesEncoded = new String[replies.size()];
 			for (int i = 0; i < repliesEncoded.length; i++) {
-				repliesEncoded[i] = URLEncoder.encode(replies.get(i), "ASCII");
+				repliesEncoded[i] = "\"" + replies.get(i) + "\"";
 			}
 			jb.addArray("replies", repliesEncoded);
 		} catch (UnsupportedEncodingException e) {

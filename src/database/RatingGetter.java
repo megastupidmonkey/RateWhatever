@@ -82,6 +82,10 @@ public class RatingGetter {
 	}
 	public List<String> getReplies(String list) throws SQLException{
 		list = list.substring(1, list.length() - 1);
-		return new ArrayList<String>(Arrays.asList(list.split("\\s*,\\s*")));
+		if (list.trim().length() != 0) {
+			return new ArrayList<String>(Arrays.asList(list.split("\\s*,\\s*")));
+		} else {
+			return new ArrayList<String>();
+		}
 	}
 }

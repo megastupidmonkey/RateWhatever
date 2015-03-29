@@ -82,6 +82,9 @@ public class Processor {
 		JSONBuilder jb = new JSONBuilder();
 		jb.addValue("action", "search");
 		
+		int average = db.getAverageRating(location);
+		jb.addValue("average", average);
+		
 		String[] ratings = new String[ratingsList.size()];
 		for (int i = 0; i < ratings.length; i++) {
 			ratings[i] = ratingsList.get(i).toString();
