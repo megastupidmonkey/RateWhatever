@@ -31,7 +31,7 @@ public class Entity {
 	public double getTotalStars() {
 		return totalStars;
 	}
-	public void setAverageRating(int totalStars) {
+	public void setTotalStars(int totalStars) {
 		this.totalStars = totalStars;
 	}
 	public int getNumRatings() {
