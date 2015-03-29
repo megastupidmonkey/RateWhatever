@@ -39,7 +39,7 @@ public class ClientSocket extends Thread {
 		
 		try {
 			sb.append("HTTP/1.1 200 OK\r\nConnection: close\r\n");
-			sb.append("Access-Control-Allow-Origin: null\r\n\r\n");
+			sb.append("Access-Control-Allow-Origin: *\r\n\r\n");
 			sb.append(str);
 			
 			bout.write(sb.toString().getBytes("ASCII"));
