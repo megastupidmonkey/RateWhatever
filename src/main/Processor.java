@@ -3,12 +3,17 @@ package main;
 import java.util.HashMap;
 import java.util.Map;
 
+import database.RatingDB;
+
 public class Processor {
+	private RatingDB db;
+	
 	public Processor() {
-		
+		db = new RatingDB("jdbc:mysql://ratewhatever.cloudapp.net/ratewhatever", 
+				"user", "1whatever");
 	}
 	
-	public void process(String str) {
+	public void process(ClientSocket client, String str) {
 		String[] pairs = str.split("&");
 		Map<String, String> map = new HashMap<>();
 		
@@ -23,10 +28,10 @@ public class Processor {
 			System.out.println("**" + key + " : " + value + "**");
 		}
 		
-		switching(map);
+		switching(client, map);
 	}
 	
-	private void switching(Map<String, String> map) {
+	private void switching(ClientSocket client, Map<String, String> map) {
 		String action = map.get("action");
 		
 		if (action == null) {
@@ -35,6 +40,17 @@ public class Processor {
 		}
 		
 		if (action.equals("new")) {
+			/*
+			 * Add New Rating
+			 */
+			String username = map.get("username");
+			String location = map.get("location");
+			int numStars = Integer.parseInt(map.get("numStars"));
+			String description = map.get("description");
+			
+			db.addNewRating(username, location, numStars, description);
+			
+			// respond to client
 			
 		}
 	}

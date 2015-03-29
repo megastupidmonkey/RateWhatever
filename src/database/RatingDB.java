@@ -46,7 +46,8 @@ public class RatingDB {
 	public void addNewReply(Rating rating, String reply){
 		try {
 			rating.addReply(reply);
-			updater.updateRating(rating.getId(), "replies", "\'" + rating.getReplies().toString() + "\'");
+			updater.updateRating(rating.getId(), "replies", "\'" + 
+					rating.getReplies().toString() + "\'");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

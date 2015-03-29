@@ -26,7 +26,17 @@ public class ClientSocket extends Thread {
 	
 	public void stopClient() {
 		try {
+			System.out.println("Closing...");
+			
 			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendToClient(byte[] bys) {
+		try {
+			bout.write(bys);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -47,18 +57,14 @@ public class ClientSocket extends Thread {
 			int nread = bin.read(content);
 			
 			String str = new String(content, 0, nread);
-			processor.process(str);
+			processor.process(this, str);
 			
-			System.out.println(str);
-			
+			/*
 			bout.write("HTTP/1.1 200 OK\r\nConnection: close\r\n".getBytes("ASCII"));
 			bout.write("Access-Control-Allow-Origin: null\r\n\r\n".getBytes("ASCII"));
 			bout.write("Response".getBytes("ASCII"));
 			bout.flush();
-			
-			System.out.println("Closing...");
-			
-			socket.close();
+			*/
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
