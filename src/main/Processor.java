@@ -46,7 +46,28 @@ public class Processor {
 			addNewRating(client, map);
 		} else if (action.equals("search")) {
 			searchLocation(client, map);
+		} else if (action.equals("reply")) {
+			addReply(client, map);
 		}
+	}
+	
+	private void addReply(ClientSocket client, Map<String, String> map) {
+		int ratingID = Integer.parseInt(map.get("ratingID"));
+		String reply = map.get("reply");
+		
+		// respond to client
+		JSONBuilder jb = new JSONBuilder();
+		jb.addValue("action", "reply");
+		
+		if (db.addNewReply(ratingID, reply)) {
+			jb.addValue("status", "success");
+		} else {
+			jb.addValue("status", "failed");
+		}
+		
+		client.sendToClient(jb.toString());
+		
+		client.stopClient();
 	}
 	
 	private void searchLocation(ClientSocket client, Map<String, String> map) {
