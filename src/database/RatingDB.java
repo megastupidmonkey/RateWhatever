@@ -16,7 +16,7 @@ public class RatingDB {
 	}
 	public boolean addNewRating(String owner, String location, int numStars, String description){
 		try {
-			Entity entity = fetcher.getEntityWithProperty(ENT_TABLE, "location", "\'" + location + "\'");
+			Entity entity = fetcher.getEntityWithProperty(ENT_TABLE, "location", location);
 			if(entity == null){
 				entity = new Entity();
 				entity.addProperty("location", location);
@@ -39,7 +39,7 @@ public class RatingDB {
 	}
 	public List<Rating> getRatings(String location){
 		try {
-			Entity entity = fetcher.getEntityWithProperty(ENT_TABLE, "location", "\'" + location + "\'");
+			Entity entity = fetcher.getEntityWithProperty(ENT_TABLE, "location", location);
 			return fetcher.getRatingsForEntity(RATE_TABLE, entity);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -67,8 +67,8 @@ public class RatingDB {
 	public boolean addNewReply(int ratingID, String reply){
 		try {
 			this.getRating(ratingID).addReply(reply);
-			updater.updateRating(ratingID, "replies", "\'" + 
-					this.getRating(ratingID).getReplies().toString() + "\'");
+			updater.updateRating(ratingID, "replies", 
+					this.getRating(ratingID).getReplies().toString());
 			
 			return true;
 		} catch (SQLException e) {
