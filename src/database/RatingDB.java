@@ -64,11 +64,11 @@ public class RatingDB {
 			return null;
 		}
 	}
-	public boolean addNewReply(Rating rating, String reply){
+	public boolean addNewReply(int ratingID, String reply){
 		try {
-			rating.addReply(reply);
-			updater.updateRating(rating.getId(), "replies", "\'" + 
-					rating.getReplies().toString() + "\'");
+			this.getRating(ratingID).addReply(reply);
+			updater.updateRating(ratingID, "replies", "\'" + 
+					this.getRating(ratingID).getReplies().toString() + "\'");
 			
 			return true;
 		} catch (SQLException e) {
