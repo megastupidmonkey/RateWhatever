@@ -36,10 +36,15 @@ public class RatingDB {
 		}
 	}
 	public Rating getRating(int ratingID){
-		return null;
+		try {
+			return fetcher.getRating(RATE_TABLE, ENT_TABLE, ratingID);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
-	public void addNewReply(String reply){
-		
+	public void addNewReply(Rating rating, String reply){
+		rating.addReply(reply);
 	}
 	public void commit(){
 		try {

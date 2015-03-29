@@ -44,14 +44,33 @@ public class RatingGetter {
 	public List<Rating> getRatingsForEntity(String tableName, Entity entity) throws SQLException{
 		ResultSet rs = s.executeQuery("select * from " + tableName + " where entityID=" + entity.getId());
 		if(!rs.isBeforeFirst())
-			return null; //result set is empty
+			return new java.util.ArrayList<>(); //result set is empty
 		rs.next();
 		List<Rating> list = new java.util.ArrayList<>();
 		while(!rs.isAfterLast()){
 			Rating rating = new Rating(rs.getInt(3), rs.getString(4), entity, rs.getString(2));
 			rating.setId(rs.getInt(1));
+			rating.setReplies(this.getReplies(rs.getString(6)));
 			list.add(rating);
+			rs.next();
 		}
 		return list;
+	}
+	public Rating getRating(String rateTable, String entityTable, int ratingID) throws SQLException{
+		ResultSet rs = s.executeQuery("select * from " + rateTable + " where ratingID=" + ratingID);
+		if(!rs.isBeforeFirst())
+			return null; //result set is empty
+		rs.next();
+		int id = rs.getInt(1);
+		String owner = rs.getString(2);
+		String replies = rs.getString(6);
+		Rating rating = new Rating(rs.getInt(3), rs.getString(4),
+			this.getEntityWithProperty(entityTable, "ID", "" + rs.getInt(5)), owner);
+		rating.setId(id);
+		rating.setReplies(this.getReplies(replies));
+		return rating;
+	}
+	public List<String> getReplies(String list) throws SQLException{
+		return java.util.Arrays.asList(list.split("\\s*,\\s*"));
 	}
 }

@@ -36,6 +36,9 @@ public class Rating {
 	public List<String> getReplies() {
 		return replies;
 	}
+	public void setReplies(List<String> replies) {
+		this.replies = replies;
+	}
 	public void addReply(String reply){
 		this.replies.add(reply);
 	}
