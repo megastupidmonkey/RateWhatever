@@ -28,7 +28,7 @@ public class RatingDB {
 			System.out.println(entity.getId());
 			
 			Rating rating = new Rating(numStars, description, entity, owner);
-			rating.setId(updater.getRowCount(RATE_TABLE) + 1);
+			rating.setId(updater.getRowCount(RATE_TABLE));
 			updater.addRating(rating);
 			updater.updateEntity(ENT_TABLE, entity.getId(), "totalStars", "" + (entity.getTotalStars() + numStars));
 			updater.updateEntity(ENT_TABLE, entity.getId(), "numRatings", "" + (entity.getNumRatings() + 1));

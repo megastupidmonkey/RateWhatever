@@ -48,18 +48,20 @@ public class DBUpdater {
 	 * @requires ENTITIES table exists and columns are in order ID, PROPERTIES
 	 */
 	public void updateEntity(String tableName, int entityID, String property, String value) throws SQLException{
-		s.addBatch("update " + tableName + "set " + property + "='" + value + "' where id='" + entityID + "'");
+		s.addBatch("update " + tableName + " set " + property + 
+				"='" + value + "' where ID=" + entityID);
 	}
 	/** @throws SQLException 
 	 * @requires RATINGS table exists and columns are in order ID,
 	 *  OWNER, NUMSTARS, DESCRIPTION, ENTITYID, REPLIES
 	 */
 	public void addRating(Rating rating) throws SQLException{
-		String mysql = "insert into ratings (ratingID, owner, numStars, description, entityID, replies) values('"
-				+ rating.getId() + "','" + rating.getOwner() + "','"
-				+ rating.getNumStars() + "','" + rating.getDescription() + "','"
-				+ rating.getEntity().getId() + "','"
+		String mysql = "insert into ratings (ratingID, owner, numStars, description, entityID, replies) values("
+				+ rating.getId() + ",'" + rating.getOwner() + "',"
+				+ rating.getNumStars() + ",'" + rating.getDescription() + "',"
+				+ rating.getEntity().getId() + ",'"
 				+ rating.getReplies().toString() + "')";
+		System.out.println(mysql);
 		s.addBatch(mysql);
 		s.executeBatch();
 	}
