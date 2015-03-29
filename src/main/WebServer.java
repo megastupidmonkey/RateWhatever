@@ -10,10 +10,12 @@ public class WebServer extends Thread {
 	private ServerSocket serverSocket;
 	private boolean running;
 	private List<ClientSocket> clients;
+	private Processor processor;
 	
 	public WebServer(int port) throws IOException {
 		serverSocket = new ServerSocket(port);
 		clients = new ArrayList<>();
+		processor = new Processor();
 	}
 	
 	public void run() {
@@ -24,7 +26,7 @@ public class WebServer extends Thread {
 			
 			try {
 				Socket socket = serverSocket.accept();
-				ClientSocket clientSocket = new ClientSocket(socket);
+				ClientSocket clientSocket = new ClientSocket(socket, processor);
 				
 				clients.add(clientSocket);
 				clientSocket.start();

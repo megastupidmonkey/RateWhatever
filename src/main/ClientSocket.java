@@ -10,8 +10,11 @@ public class ClientSocket extends Thread {
 	private BufferedInputStream bin;
 	private BufferedOutputStream bout;
 	
-	public ClientSocket(Socket socket) {
+	private Processor processor;
+	
+	public ClientSocket(Socket socket, Processor processor) {
 		this.socket = socket;
+		this.processor = processor;
 		
 		try {
 			bin = new BufferedInputStream(socket.getInputStream());
@@ -43,7 +46,10 @@ public class ClientSocket extends Thread {
 			byte[] content = new byte[8192];
 			int nread = bin.read(content);
 			
-			System.out.println(new String(content, 0, nread));
+			String str = new String(content, 0, nread);
+			processor.process(str);
+			
+			System.out.println(str);
 			
 			bout.write("HTTP/1.1 200 OK\r\nConnection: close\r\n".getBytes("ASCII"));
 			bout.write("Access-Control-Allow-Origin: null\r\n\r\n".getBytes("ASCII"));
