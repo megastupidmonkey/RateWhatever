@@ -66,9 +66,10 @@ public class RatingDB {
 	}
 	public boolean addNewReply(int ratingID, String reply){
 		try {
-			this.getRating(ratingID).addReply(reply);
+			Rating rating = this.getRating(ratingID);
+			rating.addReply(reply);
 			updater.updateRating(ratingID, "replies", 
-					this.getRating(ratingID).getReplies().toString());
+					rating.getReplies().toString());
 			
 			return true;
 		} catch (SQLException e) {
