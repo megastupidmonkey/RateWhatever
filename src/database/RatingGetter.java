@@ -5,13 +5,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import javax.sql.DataSource;
-
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-
-import data.Entity;
-import data.Rating;
+import data.*;
 
 public class RatingGetter {
 	private Statement s;
