@@ -25,7 +25,7 @@ public class RateWhatever {
 			
 			in.close();
 		} catch (IOException e) {
-			// Ignore exceptions
+			e.printStackTrace();
 		}
 		
 		
