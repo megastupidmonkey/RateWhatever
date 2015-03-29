@@ -34,16 +34,19 @@ public class RatingGetter {
 	}
 	public Entity getEntityWithProperty(String tableName, String property, String value) throws SQLException{
 		ResultSet rs = s.executeQuery("select * from " + tableName + " where " + 
-				property + "='" + value + "'");
+				property + "=" + value);
 		if(!rs.isBeforeFirst())
 			return null; //result set is empty
 		rs.next();
 		Entity entity = new Entity();
-		for(int i = 1;i <= rs.getMetaData().getColumnCount();i++){
+		entity.setId(rs.getInt(1));
+		for(int i = 2;i <= rs.getMetaData().getColumnCount()-2;i++){
 			String prop = rs.getMetaData().getColumnName(i);
 			String val = rs.getString(i);
 			entity.addProperty(prop, val);
 		}
+		entity.setTotalStars(rs.getInt(rs.getMetaData().getColumnCount()-1));
+		entity.setNumRatings(rs.getInt(rs.getMetaData().getColumnCount()));
 		return entity;
 	}
 	/** @throws SQLException 
@@ -51,6 +54,8 @@ public class RatingGetter {
 	 *  OWNER, NUMSTARS, DESCRIPTION, ENTITYID, REPLIES
 	 */
 	public List<Rating> getRatingsForEntity(String tableName, Entity entity) throws SQLException{
+		if(entity == null)
+			return new java.util.ArrayList<>(); //result set is empty
 		ResultSet rs = s.executeQuery("select * from " + tableName + " where entityID=" + entity.getId());
 		if(!rs.isBeforeFirst())
 			return new java.util.ArrayList<>(); //result set is empty
