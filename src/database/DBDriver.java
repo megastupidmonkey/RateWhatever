@@ -27,22 +27,30 @@ public class DBDriver {
 			e.printStackTrace();
 		}
 	}
-	/** @requires ENTITIES table exists
+	/** @throws SQLException 
+	 * @requires ENTITIES table exists and has columns ID and PROPERTIES
 	 */
-	public void addEntity(Entity entity){
-		
+	public void addEntity(Entity entity) throws SQLException{
+		s.addBatch("insert into entities values(" + entity.getId() + ", " +
+				JSONConverter.toJson(entity.getProperties()) + ")");
 	}
-	public void updateEntity(int entityID, String property){
-		
-	}
-	/** @requires RATINGS table exists
-	 * @requires rating does not already exist in database
+	/** @throws SQLException 
+	 * @requires ENTITIES table exists and columns are in order ID, PROPERTIES
 	 */
-	public void addRating(Rating rating){
-		
+	public void updateEntity(Entity entity) throws SQLException{
+		s.addBatch("update table entities set properties=" + JSONConverter.toJson(entity.getProperties())
+				+ " where id=" + entity.getId());
 	}
-	public void updateRating(Rating rating){
-		
+	/** @throws SQLException 
+	 * @requires RATINGS table exists and columns are in order ID, DESCRIPTION, ENTITYID, OWNER, REPLIES
+	 */
+	public void addRating(Rating rating) throws SQLException{
+		s.addBatch("insert into ratings values(" + rating.getId() + ", " + rating.getDescription()
+				+ ", " + rating.getEntity().getId() + ", " + rating.getOwner() +
+				", " + rating.getReplies().toString());
+	}
+	public void updateRating(int ratingID, String property, String value) throws SQLException{
+		s.addBatch("update table entities set " + property + "=" + value + " where id=" + ratingID);
 	}
 	public void executeBatch() throws SQLException{
 		s.executeBatch();
