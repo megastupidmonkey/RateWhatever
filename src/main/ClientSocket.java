@@ -21,6 +21,14 @@ public class ClientSocket extends Thread {
 		}
 	}
 	
+	public void stopClient() {
+		try {
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void run() {
 		try {
 			while (true) {
@@ -30,17 +38,19 @@ public class ClientSocket extends Thread {
 				}
 			}
 			
-			byte[] bys = new byte[1024];
+			System.out.println("Reading...");
 			
-			bin.read(bys);
+			byte[] content = new byte[8192];
+			int nread = bin.read(content);
 			
-			System.out.println(new String(bys));
+			System.out.println(new String(content, 0, nread));
 			
-			
-			bout.write("HTTP/1.1 200 OK\r\nConnection: close".getBytes("ASCII"));
-			bout.write("\r\nAccess-Control-Allow-Origin: null\r\n".getBytes("ASCII"));
-			bout.write("\r\nHello world!\r\n\r\nSome".getBytes("UTF-8"));
+			bout.write("HTTP/1.1 200 OK\r\nConnection: close\r\n".getBytes("ASCII"));
+			bout.write("Access-Control-Allow-Origin: null\r\n\r\n".getBytes("ASCII"));
+			bout.write("Response".getBytes("ASCII"));
 			bout.flush();
+			
+			System.out.println("Closing...");
 			
 			socket.close();
 		} catch (IOException e) {
