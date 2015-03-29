@@ -30,7 +30,7 @@ public class RatingGetter {
 	}
 	public Entity getEntityWithProperty(String tableName, String property, String value) throws SQLException{
 		ResultSet rs = s.executeQuery("select * from " + tableName + " where " + 
-				property + "=" + value);
+				property + "='" + value + "'");
 		if(!rs.isBeforeFirst())
 			return null; //result set is empty
 		rs.next();

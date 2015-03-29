@@ -52,6 +52,7 @@ public class Processor {
 	private void searchLocation(ClientSocket client, Map<String, String> map) {
 		String location = map.get("location");
 		
+		
 		List<Rating> ratingsList = db.getRatings(location);
 		
 		// respond to client
@@ -62,7 +63,7 @@ public class Processor {
 		for (int i = 0; i < ratings.length; i++) {
 			ratings[i] = ratingsList.get(i).toString();
 		}
-		jb.addArray("replies", ratings);
+		jb.addArray("list", ratings);
 		
 		client.sendToClient(jb.toString());
 		

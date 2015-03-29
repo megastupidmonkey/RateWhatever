@@ -1,4 +1,6 @@
 package data;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,9 +53,20 @@ public class Rating {
 		
 		jb.addValue("id", String.valueOf(id));
 		jb.addValue("numStars", String.valueOf(numStars));
-		jb.addValue("description", description);
+		try {
+			jb.addValue("description", URLEncoder.encode(description, "ASCII"));
+			
+			String[] repliesEncoded = new String[replies.size()];
+			for (int i = 0; i < repliesEncoded.length; i++) {
+				repliesEncoded[i] = URLEncoder.encode(replies.get(i), "ASCII");
+			}
+			jb.addArray("replies", repliesEncoded);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		jb.addValue("username", owner);
-		jb.addArray("replies", replies);
+		
+		
 		
 		return jb.toString();
 	}
