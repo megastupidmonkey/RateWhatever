@@ -46,9 +46,15 @@ public class RatingDB {
 			return null;
 		}
 	}
-	public int getAverageRating(Entity entity){
-		double numStars = (double)entity.getTotalStars();
-		return (int)Math.round(numStars/(entity.getNumRatings()));
+	public int getAverageRating(String location){
+		try {
+			Entity entity = fetcher.getEntityWithProperty(ENT_TABLE, "location", location);
+			double numStars = (double)entity.getTotalStars();
+			return (int)Math.round(numStars/(entity.getNumRatings()));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 	public Rating getRating(int ratingID){
 		try {
