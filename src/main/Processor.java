@@ -1,19 +1,34 @@
 package main;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import data.Rating;
 import database.RatingDB;
 
 public class Processor {
-	private RatingDB db;
+	private RatingDB	db;
 	
 	public Processor() {
-		db = new RatingDB("jdbc:mysql://ratewhatever.cloudapp.net/ratewhatever", 
-				"user", "1whatever");
+		try {
+			Scanner in = new Scanner(new FileInputStream("db"));
+			
+			String url = in.nextLine();
+			String username = in.nextLine();
+			String password = in.nextLine();
+
+			this.db = new RatingDB(url, username, password);
+
+			in.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			System.exit(-1);
+		}
 	}
 	
 	public void process(ClientSocket client, String str) throws IOException {
@@ -23,18 +38,19 @@ public class Processor {
 		for (int i = 0; i < pairs.length; i++) {
 			String pair = pairs[i];
 			String[] tmp = pair.split("=");
-			String key = decode(tmp[0]);
-			String value = decode(tmp[1]);
+			String key = this.decode(tmp[0]);
+			String value = this.decode(tmp[1]);
 			
 			map.put(key, value);
 			
 			System.out.println("**" + key + " : " + value + "**");
 		}
 		
-		switching(client, map);
+		this.switching(client, map);
 	}
 	
-	private void switching(ClientSocket client, Map<String, String> map) throws IOException {
+	private void switching(ClientSocket client, Map<String, String> map)
+			throws IOException {
 		String action = map.get("action");
 		
 		if (action == null) {
@@ -43,11 +59,11 @@ public class Processor {
 		}
 		
 		if (action.equals("new")) {
-			addNewRating(client, map);
+			this.addNewRating(client, map);
 		} else if (action.equals("search")) {
-			searchLocation(client, map);
+			this.searchLocation(client, map);
 		} else if (action.equals("reply")) {
-			addReply(client, map);
+			this.addReply(client, map);
 		}
 	}
 	
@@ -61,7 +77,7 @@ public class Processor {
 		
 		System.out.println(reply);
 		
-		if (db.addNewReply(ratingID, reply)) {
+		if (this.db.addNewReply(ratingID, reply)) {
 			jb.addValue("status", "success");
 		} else {
 			jb.addValue("status", "failed");
@@ -74,9 +90,8 @@ public class Processor {
 	
 	private void searchLocation(ClientSocket client, Map<String, String> map) {
 		String location = map.get("location");
-		
-		
-		List<Rating> ratingsList = db.getRatings(location);
+
+		List<Rating> ratingsList = this.db.getRatings(location);
 		
 		if (ratingsList == null) {
 			// no such place
@@ -95,7 +110,7 @@ public class Processor {
 		jb.addValue("action", "search");
 		jb.addValue("status", "success");
 		
-		int average = db.getAverageRating(location);
+		int average = this.db.getAverageRating(location);
 		jb.addValue("average", average);
 		
 		String[] ratings = new String[ratingsList.size()];
@@ -119,7 +134,7 @@ public class Processor {
 		JSONBuilder jb = new JSONBuilder();
 		jb.addValue("action", "new");
 		
-		if (db.addNewRating(username, location, numStars, description)) {
+		if (this.db.addNewRating(username, location, numStars, description)) {
 			jb.addValue("status", "success");
 			
 			client.sendToClient(jb.toString());
@@ -147,15 +162,15 @@ public class Processor {
 					return "";
 				}
 				
-				char ch = (char)Integer.parseInt(new String(chars, i + 1, 2), 16);
+				char ch = (char) Integer.parseInt(new String(chars, i + 1, 2),
+						16);
 				sb.append(ch);
 				i += 2;
 			} else {
 				sb.append(chars[i]);
 			}
 		}
-		
-		
+
 		return sb.toString();
 	}
 }
